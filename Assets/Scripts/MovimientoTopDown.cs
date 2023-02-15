@@ -5,18 +5,21 @@ using UnityEngine;
 
 public class MovimientoTopDown : MonoBehaviour
 {
-    [SerializeField] private float velocidadMovimiento;
+    [SerializeField] private float velocidadActual;
     [SerializeField] private Vector2 direccion;
-    private Rigidbody2D rb2D; // ToDo: cambiar nombre variable.
-    private SpriteRenderer spi;
-    IAsyncResult desacelerar;
-    System.Timers.Timer timer = new(interval: 500);
+    private Rigidbody2D rb2D;
+    private SpriteRenderer spriteRenderer;
+    private int mana = 10; // labios compartidos
+    static int TIEMPO_REINICIO_TIMER = 50;
+    static int VELOCIDAD_MOVIMIENTO_DASH = 35;
+    System.Timers.Timer timer = new(interval: TIEMPO_REINICIO_TIMER);
 
     // Start is called before the first frame update
     void Start()
     {
         rb2D = GetComponent<Rigidbody2D>();
-        spi = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        Debug.Log(mana);
     }
 
     // Update is called once per frame
@@ -27,37 +30,49 @@ public class MovimientoTopDown : MonoBehaviour
 
     private void Dash()
     {
-        velocidadMovimiento = 10;
+        velocidadActual = VELOCIDAD_MOVIMIENTO_DASH;
 
         // https://josipmisko.com/posts/c-sharp-timer
-        timer.Elapsed += (sender, e) => DesacelerarJugador(3);
+        timer.Elapsed += (sender, e) => SetearVelocidadJugador(3);
         timer.Start();
     }
 
-    private void DesacelerarJugador(int velocidadDeseada)
+    private void SetearVelocidadJugador(int velocidadDeseada)
     {
-        velocidadMovimiento = velocidadDeseada;
-        timer.Dispose();
-        timer = new(interval: 500);
+        velocidadActual = velocidadDeseada;
+        timer.Dispose(); // para evitar memory leaks/overflows
+        timer = new(interval: TIEMPO_REINICIO_TIMER);
     }
 
     private void FixedUpdate()
     {
-        rb2D.MovePosition(rb2D.position + direccion * velocidadMovimiento * Time.fixedDeltaTime);
+        rb2D.MovePosition(rb2D.position + direccion * velocidadActual * Time.fixedDeltaTime);
         if (direccion[0] < 0)
         {
-            spi.flipX = true;
+            spriteRenderer.flipX = true;
         }
         else if (direccion[0] > 0)
         {
-            spi.flipX = false;
+            spriteRenderer.flipX = false;
         }
         foreach (KeyCode vKey in System.Enum.GetValues(typeof(KeyCode)))
         {
             if (Input.GetKey(vKey) && vKey == KeyCode.H)
             {
-                Dash();
+                Debug.Log(mana);
+                if (mana > 2)
+                {
+                    Debug.Log("bajo mana");
+                    mana = mana - 10;
+                    Dash();
+                }
             }
+        }
+
+        if (mana < 10)
+        {
+            Debug.Log("subo mana");
+            mana = mana + 1; 
         }
     }
 }
