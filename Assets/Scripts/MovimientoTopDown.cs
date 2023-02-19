@@ -5,13 +5,14 @@ using UnityEngine;
 
 public class MovimientoTopDown : MonoBehaviour
 {
-    [SerializeField] private float velocidadActual;
+    [SerializeField] private float velocidadActual = 3.0f;
     [SerializeField] private Vector2 direccion;
     private Rigidbody2D rb2D;
     private SpriteRenderer spriteRenderer;
-    private int mana = 10; // labios compartidos
+    public float dashRate = 1.5f;
+    public float nextDash = 0.0f;
     static int TIEMPO_REINICIO_TIMER = 50;
-    static int VELOCIDAD_MOVIMIENTO_DASH = 35;
+    static float VELOCIDAD_MOVIMIENTO_DASH = 35.0f;
     System.Timers.Timer timer = new(interval: TIEMPO_REINICIO_TIMER);
 
     // Start is called before the first frame update
@@ -19,13 +20,20 @@ public class MovimientoTopDown : MonoBehaviour
     {
         rb2D = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        Debug.Log(mana);
+        direccion = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
     }
 
     // Update is called once per frame
     void Update()
     {
-        direccion = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
+        foreach (KeyCode vKey in System.Enum.GetValues(typeof(KeyCode)))
+        {
+            if (Input.GetKey(vKey) && vKey == KeyCode.H && Time.time > nextDash)
+            {
+                nextDash = Time.time + dashRate;
+                Dash();
+            }
+        }
     }
 
     private void Dash()
@@ -46,6 +54,8 @@ public class MovimientoTopDown : MonoBehaviour
 
     private void FixedUpdate()
     {
+        direccion = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
+
         rb2D.MovePosition(rb2D.position + direccion * velocidadActual * Time.fixedDeltaTime);
         if (direccion[0] < 0)
         {
@@ -54,25 +64,6 @@ public class MovimientoTopDown : MonoBehaviour
         else if (direccion[0] > 0)
         {
             spriteRenderer.flipX = false;
-        }
-        foreach (KeyCode vKey in System.Enum.GetValues(typeof(KeyCode)))
-        {
-            if (Input.GetKey(vKey) && vKey == KeyCode.H)
-            {
-                Debug.Log(mana);
-                if (mana > 2)
-                {
-                    Debug.Log("bajo mana");
-                    mana = mana - 10;
-                    Dash();
-                }
-            }
-        }
-
-        if (mana < 10)
-        {
-            Debug.Log("subo mana");
-            mana = mana + 1; 
         }
     }
 }

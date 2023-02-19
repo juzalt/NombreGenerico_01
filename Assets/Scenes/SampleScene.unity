@@ -353,8 +353,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f809924b49b99c44d85839cd8464da21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocidadMovimiento: 3
+  velocidadActual: 3
   direccion: {x: 0, y: 0}
+  dashRate: 1.5
+  nextDash: 0
 --- !u!1 &2101747003
 GameObject:
   m_ObjectHideFlags: 0
