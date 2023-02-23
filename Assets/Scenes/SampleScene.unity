@@ -355,7 +355,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocidadActual: 3
   direccion: {x: 0, y: 0}
-  dashRate: 1.5
+  dashRate: 1
   nextDash: 0
 --- !u!1 &2101747003
 GameObject:

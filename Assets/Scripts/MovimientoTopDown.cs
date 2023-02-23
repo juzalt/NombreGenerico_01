@@ -9,7 +9,7 @@ public class MovimientoTopDown : MonoBehaviour
     [SerializeField] private Vector2 direccion;
     private Rigidbody2D rb2D;
     private SpriteRenderer spriteRenderer;
-    public float dashRate = 1.5f;
+    public float dashRate = 1.2f;
     public float nextDash = 0.0f;
     static int TIEMPO_REINICIO_TIMER = 50;
     static float VELOCIDAD_MOVIMIENTO_DASH = 35.0f;
