@@ -26,8 +26,10 @@ public class MuerteRespawn : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("ENTRO");
-        if (other.gameObject.CompareTag("Player"))
+        /*        if (other.gameObject.CompareTag("Player")) */
+        if (other.gameObject.CompareTag("Player") && (other.GetType() == typeof(CapsuleCollider2D)))
         {
+            Debug.Log("ENTROOOOOOOO");
             flag = true;
             IntanceObject = other.gameObject;
             StopAllCoroutines();

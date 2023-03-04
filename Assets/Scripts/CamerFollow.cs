@@ -10,6 +10,7 @@ public class CamerFollow : MonoBehaviour
 
     public float haciaAdelante;
     public float suavisadoCamara;
+    public float offsetCamera;
 
 
     private void Start()
@@ -38,12 +39,12 @@ public class CamerFollow : MonoBehaviour
         }
         else if (movimiento.direccion.y == 1)
         {
-            targetPos = new Vector3(targetPos.x, targetPos.y + haciaAdelante, transform.position.z);
+            targetPos = new Vector3(targetPos.x, targetPos.y - haciaAdelante, transform.position.z);
         }
         else if (movimiento.direccion.y == -1)
         {
-            targetPos = new Vector3(targetPos.x, targetPos.y - haciaAdelante, transform.position.z);
+            targetPos = new Vector3(targetPos.x, targetPos.y + haciaAdelante, transform.position.z);
         }
-        transform.position = Vector3.Lerp(transform.position, targetPos, suavisadoCamara * Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, targetPos , suavisadoCamara * Time.deltaTime);
     } 
 }
