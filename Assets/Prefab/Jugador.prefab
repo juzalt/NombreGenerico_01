@@ -298,6 +298,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objetoHijo: {fileID: 0}
   targetPos: {x: 0, y: 0, z: 0}
-  haciaAdelante: 2.5
-  suavisadoCamara: 5
-  offsetCamera: 5
+  haciaAdelante: 0.001
+  suavisadoCamara: 10
+  offsetCamera: 1

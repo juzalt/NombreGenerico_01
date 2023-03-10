@@ -39,11 +39,11 @@ public class CamerFollow : MonoBehaviour
         }
         else if (movimiento.direccion.y == 1)
         {
-            targetPos = new Vector3(targetPos.x, targetPos.y - haciaAdelante, transform.position.z);
+            targetPos = new Vector3(targetPos.x, targetPos.y + haciaAdelante, transform.position.z);
         }
         else if (movimiento.direccion.y == -1)
         {
-            targetPos = new Vector3(targetPos.x, targetPos.y + haciaAdelante, transform.position.z);
+            targetPos = new Vector3(targetPos.x, targetPos.y - haciaAdelante, transform.position.z);
         }
         transform.position = Vector3.Lerp(transform.position, targetPos , suavisadoCamara * Time.deltaTime);
     } 
