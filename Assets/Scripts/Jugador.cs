@@ -3,35 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MuerteRespawn : MonoBehaviour
+public class Jugador : MonoBehaviour
 {
     public int contador;
-    public int respawn;
     public float tiempoEsperaParaMorir;
-    bool flag;
-    private GameObject IntanceObject;
+    bool jugadorDentroDeArea;
+    private GameObject jugador;
     // Start is called before the first frame update
     void Start()
     {
-        flag = false;
-        Debug.Log(flag);
-
+        jugadorDentroDeArea = false;
+        Debug.Log(jugadorDentroDeArea);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-            
-    }
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("ENTRO");
-        /*        if (other.gameObject.CompareTag("Player")) */
         if (other.gameObject.CompareTag("Player") && (other.GetType() == typeof(CapsuleCollider2D)))
         {
             Debug.Log("ENTROOOOOOOO");
-            flag = true;
-            IntanceObject = other.gameObject;
+            jugadorDentroDeArea = true;
+            jugador = other.gameObject;
             StopAllCoroutines();
             StartCoroutine(Espera());
         }
@@ -40,29 +32,23 @@ public class MuerteRespawn : MonoBehaviour
     private void OnTriggerExit2D(Collider2D other)
     {
         Debug.Log("SALIO");
-        flag = false;
+        jugadorDentroDeArea = false;
     }
+
     public IEnumerator Espera()
     {
-        if (flag == true)
+        if (jugadorDentroDeArea == true)
         {
             yield return new WaitForSeconds(tiempoEsperaParaMorir);
-            if (flag == true)
+            if (jugadorDentroDeArea == true)
             {
-                Destroy(IntanceObject);
+                Destroy(jugador);
                 Debug.Log("MURIO");
                 contador++;
-                flag = false;
-                LevelManager.instance.Respawn();
+                jugadorDentroDeArea = false;
+                LevelManager.instance.Spawn();
 
             }
-        }
-    }
-    void FinDelJuego()
-    {
-        if (contador >= 3)
-        {
-
         }
     }
 }

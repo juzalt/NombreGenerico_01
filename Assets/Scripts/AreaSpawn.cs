@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RandomSpawner : MonoBehaviour
+public class AreaSpawn : MonoBehaviour
 {
     public GameObject prefabObj;
     public float Radius = 1;

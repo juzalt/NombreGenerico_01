@@ -7,33 +7,29 @@ public class LevelManager : MonoBehaviour
     public static LevelManager instance;
     public GameObject playerPrefab;
     public GameObject[] randomsPoints;
-    public GameObject puntoleEgido;
+    public GameObject puntoElegido;
+    private float TIEMPO_ESPERA_RESPAWN = 2.0f;
     private void Awake()
     {
         instance = this;
-        Respawn();
+        Spawn();
     }
-    private void Update()
-    {
-        
-    }
-    public void Respawn()
+
+    public void Spawn()
     {
         StopAllCoroutines();
-        StartCoroutine(Count());
-        Instantiate(playerPrefab, puntoleEgido.transform.position, Quaternion.identity);
-        
-
+        StartCoroutine(ElegirPosicionSpawn());
+        Instantiate(playerPrefab, puntoElegido.transform.position, Quaternion.identity);
     }
 
-    IEnumerator Count()
+    IEnumerator ElegirPosicionSpawn()
     {
         for (int i = 0; i < randomsPoints.Length; i++)
         {
             var objNumber = Random.Range(0, randomsPoints.Length - 1);
-            puntoleEgido = randomsPoints[objNumber];
-            Debug.Log("POSICION PUNTO ELEGIDO: "+puntoleEgido.transform.position);
+            puntoElegido = randomsPoints[objNumber];
+            Debug.Log("POSICION PUNTO ELEGIDO: "+puntoElegido.transform.position);
         }
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(TIEMPO_ESPERA_RESPAWN);
     }
 }

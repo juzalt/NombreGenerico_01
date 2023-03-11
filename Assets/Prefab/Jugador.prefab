@@ -134,8 +134,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   velocidadActual: 5
-  velocidadConstante: 5
   direccion: {x: 0, y: 0}
+  dashRate: 1.2
+  nextDash: 0
 --- !u!50 &181337145760389318
 Rigidbody2D:
   serializedVersion: 4
@@ -291,13 +292,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8179899759368444213}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 38bde81f06114984481818710ab2d8b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objetoHijo: {fileID: 0}
+  jugador: {fileID: 0}
   targetPos: {x: 0, y: 0, z: 0}
   haciaAdelante: 0.001
-  suavisadoCamara: 10
+  suavizadoCamara: 0
   offsetCamera: 1
