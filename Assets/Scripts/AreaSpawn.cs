@@ -6,7 +6,7 @@ public class AreaSpawn : MonoBehaviour
 {
     public GameObject prefabObj;
     public float Radius = 1;
-    void Update()
+   /* void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space)) SpawnPlayerRandom();
     }
@@ -16,7 +16,7 @@ public class AreaSpawn : MonoBehaviour
         Vector2 randomPos = Random.insideUnitCircle * Radius;
         Vector2 randomthis = this.transform.position;
         Instantiate(prefabObj, randomthis+randomPos, Quaternion.identity);
-    }
+    }*/
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;

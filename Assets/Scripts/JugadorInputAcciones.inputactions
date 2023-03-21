@@ -1,0 +1,67 @@
+{
+    "name": "JugadorInputAcciones",
+    "maps": [
+        {
+            "name": "Jugador",
+            "id": "e085314e-4abe-411b-a62d-b92020316667",
+            "actions": [
+                {
+                    "name": "Movimiento",
+                    "type": "Button",
+                    "id": "145cce4c-c1cf-4cf2-b28f-9abb98356138",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "Two Modifiers",
+                    "id": "6738fa07-caed-4cbe-89f4-533727815217",
+                    "path": "TwoModifiers",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movimiento",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier1",
+                    "id": "60183789-cde9-4e39-924c-9952906f6f26",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movimiento",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "modifier2",
+                    "id": "c567db23-7288-42b4-abf7-1539ec01e8e8",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movimiento",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "c7c30621-b372-4b7e-b058-ff761f3d4240",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movimiento",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
