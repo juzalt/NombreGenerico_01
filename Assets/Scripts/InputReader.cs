@@ -1,18 +1,48 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class InputReader : MonoBehaviour
+
+// https://blog.logrocket.com/building-third-person-controller-unity-new-input-system/
+public class InputReader : MonoBehaviour, Controls.IPlayerActions
 {
-    // Start is called before the first frame update
-    void Start()
+    public Vector2 MouseDelta;
+    public Vector2 MoveComposite;
+
+    public Action OnJumpPerformed;
+
+    private Controls controls;
+
+    private void OnEnable()
     {
-        
+        if (controls != null)
+            return;
+
+        controls = new Controls();
+        controls.Player.SetCallbacks(this);
+        controls.Player.Enable();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnDisable()
     {
-        
+        controls.Player.Disable();
+    }
+
+    public void OnLook(InputAction.CallbackContext context)
+    {
+        MouseDelta = context.ReadValue<Vector2>();
+    }
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        MoveComposite = context.ReadValue<Vector2>();
+    }
+
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if (!context.performed)
+            return;
+
+        OnJumpPerformed?.Invoke();
     }
 }
