@@ -2,8 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-
-// https://blog.logrocket.com/building-third-person-controller-unity-new-input-system/
 public class InputReader : MonoBehaviour, Controls.IPlayerActions
 {
     public Vector2 MouseDelta;
