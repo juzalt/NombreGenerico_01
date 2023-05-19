@@ -135,7 +135,6 @@ public class CharacterMovement : MonoBehaviour
     {
         if (!isJumping)
         {
-            Debug.Log("SIMPLE SALTO");
             isJumping = true;
             jumpTimer = 0f;
             rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
@@ -150,10 +149,8 @@ public class CharacterMovement : MonoBehaviour
     }
     void DoubleJump()
     {
-
         if (jumpCount < maxJumpCount)
         {
-            Debug.Log("DOBLE SALTO");
             jumpCount++;
             canDoubleJump = false;
             rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
