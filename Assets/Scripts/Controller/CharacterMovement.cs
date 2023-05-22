@@ -32,6 +32,14 @@ public class CharacterMovement : MonoBehaviour
     private int jumpCount = 0; // Contador para controlar el número de saltos
     [SerializeField] private bool canDoubleJump = false; // Nueva variable para el doble salto
     private bool isGrounded = false; // Indica si el personaje está tocando el suelo
+    private List<Vector3> initialRelativePositions = new List<Vector3>(); // Lista que almacena las posiciones relativas iniciales de los objetos hijos con respecto al objeto principal
+    [Header("Empuje")]
+    [SerializeField] private float pushForce = 10f; // La fuerza del empuje aplicada al objeto empujado
+    [SerializeField] private float pushDuration = 1f; // La duración en segundos durante la cual se aplicará el empuje
+    private Coroutine pushCoroutine; // Referencia a la corutina actual de empuje
+
+
+
 
 
 
@@ -42,6 +50,11 @@ public class CharacterMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         animator = GetComponentInChildren<Animator>();
+        // Almacenar las posiciones relativas iniciales de los objetos hijos
+        foreach (Transform childTransform in transform)
+        {
+            initialRelativePositions.Add(childTransform.localPosition);
+        }
 
         playerInput.Player.Move.started += onMovementInput;
         playerInput.Player.Move.canceled += onMovementInput;
@@ -50,6 +63,10 @@ public class CharacterMovement : MonoBehaviour
         playerInput.Player.Jump.started += onJumpInput;
         playerInput.Player.Jump.canceled += onJumpInput;
         playerInput.Player.Jump.performed += onJumpInput;
+
+        playerInput.Player.Push.started += onPushInput;
+        playerInput.Player.Push.canceled += onPushInput;
+        playerInput.Player.Push.performed += onPushInput;
     }
 
     // Start is called before the first frame update
@@ -101,6 +118,13 @@ public class CharacterMovement : MonoBehaviour
             DoubleJump();
         }
     }
+    void onPushInput(InputAction.CallbackContext ctx)
+    {
+        if (ctx.ReadValueAsButton())
+        {
+            Push();
+        }
+    }
 
     void Move()
     {
@@ -128,6 +152,14 @@ public class CharacterMovement : MonoBehaviour
 
         // Mueve el objeto en base a la velocidad final en cada eje multiplicada por el tiempo transcurrido
         rb.MovePosition(rb.position + finalDirection * Time.deltaTime);
+
+        // Restablecer la posición de los objetos hijos en relación con el objeto principal
+        for (int i = 0; i < transform.childCount; i++)
+            {
+                Transform childTransform = transform.GetChild(i);
+                childTransform.position = transform.position + initialRelativePositions[i];
+            }
+
         }
     }
 
@@ -139,6 +171,7 @@ public class CharacterMovement : MonoBehaviour
             isJumping = true;
             jumpTimer = 0f;
             rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
+            StopCoroutine(WaitForDoubleJump()); // Detener la corrutina antes de iniciarla nuevamente
             StartCoroutine(WaitForDoubleJump());
         }
     }
@@ -159,6 +192,38 @@ public class CharacterMovement : MonoBehaviour
             rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
         }
     }
+
+    void Push()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.forward, out hit))
+        {
+            Rigidbody rigidbody = hit.collider.GetComponent<Rigidbody>();
+            if (rigidbody != null)
+            {
+                Vector3 pushDirection = hit.transform.position - transform.position;
+                pushDirection.y = 0f; // Optional: Ignorar el empuje vertical
+                pushDirection.Normalize();
+
+                rigidbody.AddForce(pushDirection * pushForce, ForceMode.Impulse);
+
+                if (pushCoroutine != null)
+                {
+                    StopCoroutine(pushCoroutine);
+                }
+                pushCoroutine = StartCoroutine(StopPush(rigidbody));
+            }
+        }
+    }
+
+    IEnumerator StopPush(Rigidbody rigidbody)
+    {
+        yield return new WaitForSeconds(pushDuration);
+        rigidbody.velocity = Vector3.zero;
+        rigidbody.angularVelocity = Vector3.zero;
+        pushCoroutine = null;
+    }
+
     void playerAnimation()
     {
         bool isRunning = animator.GetBool(isRunningHash);
