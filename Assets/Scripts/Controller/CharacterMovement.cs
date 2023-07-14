@@ -98,11 +98,15 @@ public class CharacterMovement : MonoBehaviour
     void onMovementInput(InputAction.CallbackContext ctx)
     {
         currentMovementInput = ctx.ReadValue<Vector2>();
+        currentMovement.x = currentMovementInput.x;
+        currentMovement.y = 0;
+        currentMovement.z = currentMovementInput.y;
+        /*
         //Se ingresa el Input X el Vector3.x
         currentMovement.x = currentMovementInput.x;
         currentMovement.y = 0;
         //Se ingresa el Input Y el Vector3.z
-        currentMovement.z = currentMovementInput.y;
+        currentMovement.z = currentMovementInput.y;*/
         isMovementPressed = currentMovementInput.x != 0 || currentMovementInput.y != 0;
 
     }
@@ -144,11 +148,14 @@ public class CharacterMovement : MonoBehaviour
         Vector3 currentDirection = currentRotationQuaternion * forwardDirection;
 
         // Multiplica la dirección de movimiento por la velocidad del jugador para obtener la velocidad final en cada eje
-        finalDirection.x = currentDirection.x * playerSpeed;
-        finalDirection.z = currentDirection.z * playerSpeed;
+        /*finalDirection.x = currentDirection.x * playerSpeed;
+        finalDirection.z = currentDirection.z * playerSpeed;*/
+
+        finalDirection.x = currentMovement.x * playerSpeed;
+        finalDirection.z = currentMovement.z * playerSpeed;
 
         // Rota el objeto en el eje Y en base al input de rotación del usuario
-        rb.transform.Rotate(new Vector3(0f, currentMovement.x * rotationVelocity, 0f) * Time.deltaTime);
+        rb.transform.Rotate(new Vector3(0, currentMovement.y * rotationVelocity, 0f) * Time.deltaTime);
 
         // Mueve el objeto en base a la velocidad final en cada eje multiplicada por el tiempo transcurrido
         rb.MovePosition(rb.position + finalDirection * Time.deltaTime);
